@@ -1,5 +1,5 @@
 // ======================================================
-// MillerKnoll Configurator
+// MILLERKNOLL CONFIGURATOR
 // viewer.js
 // ======================================================
 
@@ -16,39 +16,81 @@ const client = new Sketchfab("1.12.1", iframe);
 
 
 // ======================================================
-// TABLE SURFACE TEXTURES
+// LAMINATE TEXTURES
 // ======================================================
 
-const Laminate = {
+const laminateTextures = {
 
-    LBB:
-        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-1/main/images/table-surface/LBB.jpg",
+    "LBB":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Laminate/LBB.jpg",
 
-    LBC:
-        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-1/main/images/table-surface/LBC.jpg",
+    "LBC":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Laminate/LBC.jpg",
 
-    WarmAsh140:
-        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-1/main/images/table-surface/140%20Warm%20Ash.jpg",
+    "Aged-Ash":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Laminate/Aged-Ash.jpg",
 
-    LightAsh139:
-        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-1/main/images/table-surface/139%20Light%20Ash.jpg"
+    "Grey-Ash":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Laminate/Grey-Ash.jpg"
 
 };
 
 
 // ======================================================
-// TABLE LEG / METAL COLORS
+// FABRIC PANEL TEXTURES
 // ======================================================
 
-const legColors = {
+const fabricPanelTextures = {
 
-    White91: [0.91, 0.91, 0.91, 1],
+    "1AX01":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Fabric-Panel/1AX01.jpg",
 
-    MS: [0.45, 0.45, 0.45, 1],
+    "1HA13":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Fabric-Panel/1HA13.jpg",
 
-    G1: [0.15, 0.15, 0.15, 1],
+    "1AX05":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Fabric-Panel/1AX05.jpg",
 
-    CL: [0.65, 0.65, 0.65, 1]
+    "1AL01":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Fabric-Panel/1AL01.jpg"
+
+};
+
+
+// ======================================================
+// SCREEN TEXTURES
+// ======================================================
+
+const screenTextures = {
+
+    "1AL2":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1AL2.jpg",
+
+    "1HA22":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1HA22.jpg",
+
+    "1HA25":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1HA25.jpg",
+
+    "4SC10":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/4SC10.jpg"
+
+};
+
+
+// ======================================================
+// METAL COLORS
+// ======================================================
+
+const metalColors = {
+
+    "White91": [0.91, 0.91, 0.91, 1],
+
+    "MS": [0.45, 0.45, 0.45, 1],
+
+    "G1": [0.15, 0.15, 0.15, 1],
+
+    "CL": [0.65, 0.65, 0.65, 1]
 
 };
 
@@ -65,11 +107,50 @@ client.init(MODEL_UID, {
 
         api.start(function() {
 
-            console.log("Sketchfab Viewer Ready!");
+            console.log("=================================");
+            console.log("MILLERKNOLL CONFIGURATOR READY");
+            console.log("=================================");
+
+
+            // ==================================================
+            // SHOW ALL MATERIAL NAMES
+            // ==================================================
+
+            api.getMaterialList(function(err, materials) {
+
+                if (err) {
+
+                    console.error(
+                        "Could not get Sketchfab materials."
+                    );
+
+                    return;
+
+                }
+
+
+                console.log("=================================");
+                console.log("SKETCHFAB MATERIAL LIST");
+                console.log("=================================");
+
+
+                materials.forEach(function(material, index) {
+
+                    console.log(
+                        index + " : " + material.name
+                    );
+
+                });
+
+
+                console.log("=================================");
+
+            });
 
         });
 
     },
+
 
     error: function() {
 
@@ -88,20 +169,15 @@ client.init(MODEL_UID, {
 
 window.changeMaterial = function(materialName, finish) {
 
-    console.log(
-        "Changing material:",
-        materialName
-    );
-
-    console.log(
-        "Selected finish:",
-        finish
-    );
+    console.log("=================================");
+    console.log("CHANGING MATERIAL:", materialName);
+    console.log("SELECTED FINISH:", finish);
+    console.log("=================================");
 
 
-    // --------------------------------------------------
-    // CHECK SKETCHFAB
-    // --------------------------------------------------
+    // ==================================================
+    // CHECK IF SKETCHFAB IS READY
+    // ==================================================
 
     if (!window.sketchfabAPI) {
 
@@ -114,11 +190,12 @@ window.changeMaterial = function(materialName, finish) {
     }
 
 
-    // --------------------------------------------------
+    // ==================================================
     // GET MATERIAL LIST
-    // --------------------------------------------------
+    // ==================================================
 
     window.sketchfabAPI.getMaterialList(
+
         function(err, materials) {
 
             if (err) {
@@ -132,23 +209,79 @@ window.changeMaterial = function(materialName, finish) {
             }
 
 
-            // --------------------------------------------------
+            // ==================================================
             // FIND MATERIAL
-            // --------------------------------------------------
+            // ==================================================
 
             const material = materials.find(
+
                 function(mat) {
 
                     return mat.name === materialName;
 
                 }
+
             );
 
+
+            // ==================================================
+            // MATERIAL NOT FOUND
+            // ==================================================
 
             if (!material) {
 
                 console.error(
-                    "Material not found:",
+                    "MATERIAL NOT FOUND:",
+                    materialName
+                );
+
+                console.log(
+                    "AVAILABLE MATERIALS:"
+                );
+
+                materials.forEach(function(mat) {
+
+                    console.log(mat.name);
+
+                });
+
+                return;
+
+            }
+
+
+            console.log(
+                "MATERIAL FOUND:",
+                material.name
+            );
+
+
+            // ==================================================
+            // LAMINATE
+            // ==================================================
+
+            if (materialName === "adskMatLaminate") {
+
+                const textureURL =
+                    laminateTextures[finish];
+
+
+                if (!textureURL) {
+
+                    console.error(
+                        "LAMINATE TEXTURE NOT FOUND:",
+                        finish
+                    );
+
+                    return;
+
+                }
+
+
+                applyTexture(
+                    material,
+                    textureURL,
+                    finish,
                     materialName
                 );
 
@@ -157,163 +290,403 @@ window.changeMaterial = function(materialName, finish) {
             }
 
 
+            // ==================================================
+            // FABRIC PANEL
+            // ==================================================
+
+            if (materialName === "adskMatFabric_Panel") {
+
+                const textureURL =
+                    fabricPanelTextures[finish];
+
+
+                if (!textureURL) {
+
+                    console.error(
+                        "FABRIC PANEL TEXTURE NOT FOUND:",
+                        finish
+                    );
+
+                    return;
+
+                }
+
+
+                applyTexture(
+                    material,
+                    textureURL,
+                    finish,
+                    materialName
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // SCREEN
+            // ==================================================
+
+            if (materialName === "adskMatScreen") {
+
+                const textureURL =
+                    screenTextures[finish];
+
+
+                if (!textureURL) {
+
+                    console.error(
+                        "SCREEN TEXTURE NOT FOUND:",
+                        finish
+                    );
+
+                    return;
+
+                }
+
+
+                applyTexture(
+                    material,
+                    textureURL,
+                    finish,
+                    materialName
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // METAL
+            // ==================================================
+
+            if (materialName === "adskMatMetal") {
+
+                applyMetalColor(
+                    material,
+                    finish
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // UNKNOWN MATERIAL
+            // ==================================================
+
+            console.error(
+                "NO CONFIGURATION FOUND FOR:",
+                materialName
+            );
+
+        }
+
+    );
+
+};
+
+
+// ======================================================
+// APPLY TEXTURE
+// ======================================================
+
+function applyTexture(
+    material,
+    textureURL,
+    finish,
+    materialName
+) {
+
+    console.log("=================================");
+    console.log("LOADING TEXTURE");
+    console.log(textureURL);
+    console.log("=================================");
+
+
+    // ==================================================
+    // SAVE ORIGINAL TEXTURE SETTINGS
+    //
+    // The original material already contains the setup
+    // coming from the GLB / Sketchfab model.
+    //
+    // We copy those settings and replace only the UID.
+    // ==================================================
+
+    let originalTexture = {};
+
+
+    if (
+        material.channels &&
+        material.channels.AlbedoPBR &&
+        material.channels.AlbedoPBR.texture
+    ) {
+
+        originalTexture = {
+
+            ...material.channels.AlbedoPBR.texture
+
+        };
+
+    }
+
+
+    // ==================================================
+    // LOAD NEW TEXTURE
+    // ==================================================
+
+    window.sketchfabAPI.addTexture(
+
+        textureURL,
+
+        function(err, textureUID) {
+
+            if (err) {
+
+                console.error(
+                    "TEXTURE FAILED TO LOAD:",
+                    err
+                );
+
+                return;
+
+            }
+
+
             console.log(
-                "Material found:",
-                material.name
+                "TEXTURE LOADED SUCCESSFULLY"
+            );
+
+            console.log(
+                "TEXTURE UID:",
+                textureUID
             );
 
 
             // ==================================================
-            // TABLE SURFACE
+            // CHECK ALBEDO CHANNEL
             // ==================================================
 
             if (
-                materialName === "adskMatWorkSurface_Wood" &&
-                surfaceTextures[finish]
+                !material.channels ||
+                !material.channels.AlbedoPBR
             ) {
 
-                const textureURL =
-                    surfaceTextures[finish];
-
-
-                console.log(
-                    "Loading texture:",
-                    textureURL
+                console.error(
+                    "ALBEDO PBR CHANNEL NOT FOUND"
                 );
 
-
-                window.sketchfabAPI.addTexture(
-                    textureURL,
-                    function(err, textureUID) {
-
-                        if (err) {
-
-                            console.error(
-                                "Could not load texture.",
-                                err
-                            );
-
-                            return;
-
-                        }
-
-
-                        console.log(
-                            "Texture loaded:",
-                            textureUID
-                        );
-
-
-                        // Apply texture
-
-                        material.channels.AlbedoPBR.texture = {
-
-                            uid: textureUID
-
-                        };
-
-
-                        // Enable Albedo
-
-                        material.channels.AlbedoPBR.enable = true;
-
-
-                        // Apply material
-
-                        window.sketchfabAPI.setMaterial(
-                            material,
-                            function(err) {
-
-                                if (err) {
-
-                                    console.error(
-                                        "Could not apply material.",
-                                        err
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                console.log(
-                                    finish +
-                                    " texture applied successfully!"
-                                );
-
-                            }
-                        );
-
-                    }
-                );
+                return;
 
             }
 
 
             // ==================================================
-            // TABLE LEGS / METAL
+            // ENABLE ALBEDO
             // ==================================================
 
-            if (
-                materialName === "adskMatTableLegs_Metal" &&
-                legColors[finish]
-            ) {
-
-                const color =
-                    legColors[finish];
+            material.channels.AlbedoPBR.enable = true;
 
 
-                console.log(
-                    "Applying metal color:",
-                    color
-                );
+            // ==================================================
+            // REMOVE ANY COLOUR TINT
+            // ==================================================
+
+            material.channels.AlbedoPBR.color = [
+
+                1,
+                1,
+                1,
+                1
+
+            ];
 
 
-                // Remove existing texture
+            // ==================================================
+            // APPLY NEW TEXTURE
+            //
+            // IMPORTANT:
+            //
+            // Keep original texture settings.
+            // Change ONLY the texture UID.
+            //
+            // NO UV_SCALE
+            // NO setUVScale
+            // NO setUVOffset
+            // NO setUVRotation
+            //
+            // ==================================================
 
-                material.channels.AlbedoPBR.texture = null;
+            material.channels.AlbedoPBR.texture = {
 
+                ...originalTexture,
 
-                // Apply color
+                uid: textureUID
 
-                material.channels.AlbedoPBR.color =
-                    color;
-
-
-                // Enable Albedo
-
-                material.channels.AlbedoPBR.enable = true;
-
-
-                // Apply material
-
-                window.sketchfabAPI.setMaterial(
-                    material,
-                    function(err) {
-
-                        if (err) {
-
-                            console.error(
-                                "Could not apply metal color.",
-                                err
-                            );
-
-                            return;
-
-                        }
+            };
 
 
-                        console.log(
-                            finish +
-                            " metal color applied successfully!"
+            console.log(
+                "ORIGINAL MATERIAL TEXTURE SETTINGS PRESERVED"
+            );
+
+
+            // ==================================================
+            // APPLY UPDATED MATERIAL
+            // ==================================================
+
+            window.sketchfabAPI.setMaterial(
+
+                material,
+
+                function(err) {
+
+                    if (err) {
+
+                        console.error(
+                            "COULD NOT APPLY TEXTURE:",
+                            err
                         );
 
-                    }
-                );
+                        return;
 
-            }
+                    }
+
+
+                    console.log("=================================");
+
+                    console.log(
+                        finish +
+                        " TEXTURE APPLIED SUCCESSFULLY"
+                    );
+
+                    console.log(
+                        "USING EXISTING GLB UV MAPPING"
+                    );
+
+                    console.log("=================================");
+
+                }
+
+            );
 
         }
+
     );
 
-};
+}
+
+
+// ======================================================
+// APPLY METAL COLOR
+// ======================================================
+
+function applyMetalColor(
+    material,
+    finish
+) {
+
+    const color = metalColors[finish];
+
+
+    // ==================================================
+    // CHECK COLOR
+    // ==================================================
+
+    if (!color) {
+
+        console.error(
+            "METAL COLOR NOT FOUND:",
+            finish
+        );
+
+        return;
+
+    }
+
+
+    console.log("=================================");
+    console.log("APPLYING METAL COLOR");
+    console.log("FINISH:", finish);
+    console.log("COLOR:", color);
+    console.log("=================================");
+
+
+    // ==================================================
+    // CHECK ALBEDO
+    // ==================================================
+
+    if (
+        !material.channels ||
+        !material.channels.AlbedoPBR
+    ) {
+
+        console.error(
+            "METAL ALBEDO CHANNEL NOT FOUND"
+        );
+
+        return;
+
+    }
+
+
+    // ==================================================
+    // ENABLE ALBEDO
+    // ==================================================
+
+    material.channels.AlbedoPBR.enable = true;
+
+
+    // ==================================================
+    // REMOVE TEXTURE
+    // ==================================================
+
+    material.channels.AlbedoPBR.texture = null;
+
+
+    // ==================================================
+    // APPLY METAL COLOR
+    // ==================================================
+
+    material.channels.AlbedoPBR.color = color;
+
+
+    // ==================================================
+    // APPLY MATERIAL
+    // ==================================================
+
+    window.sketchfabAPI.setMaterial(
+
+        material,
+
+        function(err) {
+
+            if (err) {
+
+                console.error(
+                    "COULD NOT APPLY METAL COLOR:",
+                    err
+                );
+
+                return;
+
+            }
+
+
+            console.log("=================================");
+
+            console.log(
+                finish +
+                " METAL COLOR APPLIED SUCCESSFULLY"
+            );
+
+            console.log("=================================");
+
+        }
+
+    );
+
+}
