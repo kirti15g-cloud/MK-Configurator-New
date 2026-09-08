@@ -63,8 +63,8 @@ const fabricPanelTextures = {
 
 const screenTextures = {
 
-    "1AL2":
-        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1AL2.jpg",
+    "1AL12":
+        "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1AL12.jpg",
 
     "1HA22":
         "https://raw.githubusercontent.com/kirti15g-cloud/MK-Configurator-New/main/images/Screen/1HA22.jpg",
